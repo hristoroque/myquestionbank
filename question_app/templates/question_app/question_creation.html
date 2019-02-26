@@ -1,0 +1,9 @@
+<h1>Create your question</h1>
+<form action="{% url 'question:createquestion' theme_id %}" method="POST">
+    {% csrf_token %}
+    <label> question name </label>
+    <input name="name" type="text">
+    <label> answer </label>
+    <textarea name="answer"> </textarea>
+    <input type="submit">
+</form>
