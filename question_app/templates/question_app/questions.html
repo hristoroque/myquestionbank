@@ -1,21 +1,22 @@
+{% load static %}
+<link href="{% static 'question_app/basic.css' %}" rel="stylesheet">
 <h1> Your questions </h1>
 <a href="{% url 'question:main' %}"> go back </a>
 <a href="{% url 'question:themecreation' %}"> add theme </a>
 {% if themes %}
-    <ul>
+<table>
+    <tr>
+        <th>name</th>
+        <th>description</th>
+    </tr>
     {% for theme in themes %}
-    <li> 
-        <h2> {{ theme.theme_name }} </h2>
-        <p>  {{theme.theme_description }}</p>
-        <a href="{% url 'question:questioncreation' theme.id %}"> add question </a>
-        {% for question in theme.question_set.all %}
-        <p>
-            {{ question.question_text }}
-        </p>
-        {% endfor %}
-    </li>
-    {% endfor %} 
-    </ul>
+    <tr id="clickable"> 
+        <td> {{ theme.theme_name }} </td>
+        <td>  {{theme.theme_description }}</td>
+    </tr>
+    {% endfor %}
+</table>
 {% else %}
     <p> You don't have themes </p>
 {% endif %}
+
