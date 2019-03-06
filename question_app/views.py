@@ -3,6 +3,8 @@ from django.urls import reverse
 from django.http import HttpRequest,HttpResponseRedirect,HttpResponse
 from django.contrib.auth import authenticate,logout
 from django.contrib.auth import login as login_auth
+from django.contrib.auth.models import User
+
 from . import models
 
 def loginpage(request):
@@ -38,6 +40,19 @@ def question_creation(request,username,theme_pk):
 
 def theme_creation(request,username):
     return render(request,'question_app/theme_creation.html')
+
+def theme_edit(request,username,theme_pk):
+    theme = models.Theme.objects.get(pk = theme_pk)
+    return render(request,'question_app/theme_edit.html',context={'theme': theme})
+
+def edit_theme(request,username,theme_pk):
+    name = request.POST['theme_name']
+    description = request.POST['theme_description']
+    theme = models.Theme.objects.get(pk = theme_pk)
+    theme.theme_name = name
+    theme.theme_description = description
+    theme.save()
+    return HttpResponseRedirect(reverse('question:theme',args=[username,theme_pk]))
 
 def create_theme(request,username):
     name = request.POST['theme_name']
@@ -114,5 +129,21 @@ def take_test(request,username,test_pk):
         )
     return HttpResponseRedirect(reverse('question:tests',args=[request.user.username]))
 
-def test_review(request,username):
+def delete_test(request,username,test_pk):
+    test = models.Test.objects.get(pk = test_pk)
+    test.delete()
+    return HttpResponseRedirect(reverse('question:tests',args=[username]))
+
+def tests_review(request,username):
+    graded_tests = models.GradedTest.objects.filter(test_id__user_id = request.user)
+    return render(request,'question_app/tests_review.html',context = { 'graded_tests': graded_tests })
+    
+def test_review(request,username,graded_test_pk):
+    graded_test = models.GradedTest.objects.get(pk = graded_test_pk)
+    test = models.Test.objects.get(pk = graded_test.test_id.pk)
+    graded_questions = models.GradedTestquestion.objects.filter(test_id__pk = graded_test_pk,test_id__test_id = test)
+    print(graded_questions)
+    return render(request,'question_app/test_review.html',context = {'test': test,'graded_questions': graded_questions})
+
+def test_performance(request,username):
     return render(request,'question_app/test_review.html')
