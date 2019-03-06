@@ -1,0 +1,11 @@
+<h1> Welcome </h1>
+<a href="{% url 'question:themes' request.user.username %}"> go back </a>
+<a href="{% url 'question:question_creation' request.user.username theme_pk %}"> add question </a>
+{% if questions %}
+    {% for question in questions %}
+        <h2>{{ question.question_text }}</h2>
+        <p>{{ question.answer }}</p>
+    {% endfor %}
+{% else %}
+    <p>This theme doesn't have questions </p>
+{% endif %}

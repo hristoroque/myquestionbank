@@ -1,0 +1,33 @@
+{% load static %}
+<link href="{% static 'question_app/basic.css' %}" rel="stylesheet">
+<h1> Your questions </h1>
+<a href="{% url 'question:main' username=request.user.username %}"> go back </a>
+<a href="{% url 'question:theme_creation' username=request.user.username %}"> add theme </a>
+{% if themes %}
+<table>
+    <tr>
+        <th>name</th>
+        <th>description</th>
+    </tr>
+    {% for theme in themes %}
+    
+        <tr id="clickable"> 
+        <td>
+                <a href="{% url 'question:theme' username=request.user.username theme_pk=theme.pk%}">  {{ theme.theme_name }} </a></td>
+        <td>  {{theme.theme_description }}</td>
+        <td>
+            <form action="{% url 'question:delete_theme' username=request.user.username theme_pk=theme.pk %}" method="POST">
+                {% csrf_token %}<input type="submit" value="delete"></form>
+        </td>
+        </tr>
+    
+    
+    {% endfor %}
+</table>
+{% else %}
+    <p> You don't have themes </p>
+{% endif %}
+
+<script>
+
+</script>

@@ -1,5 +1,5 @@
 <h1>Create your theme</h1>
-<form action="{% url 'question:createtheme' %}" method="POST">
+<form action="{% url 'question:create_theme' username=request.user.username%}" method="POST">
     {% csrf_token %}
     <label> theme name </label>
     <input name="theme_name" type="text">

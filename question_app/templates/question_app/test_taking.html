@@ -1,0 +1,12 @@
+<h1> {{ test.test_name }}</h1>
+<a href="{% url 'question:tests' username=request.user.username %}">go back</a><a>take</a>
+<form action="{% url 'question:take_test' username=request.user.username test_pk=test.pk%}" method="POST">
+{% csrf_token %}
+{% for testquestion in test.testquestion_set.all %}
+    <label>{{ testquestion.question_id.question_text }}</label>
+    <br>
+    <textarea name="answer-{{ testquestion.question_id.pk }}" ></textarea>
+    <br>
+{% endfor %}
+    <input type="submit">
+</form>
