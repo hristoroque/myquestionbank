@@ -1,0 +1,21 @@
+<h1> {{ test.test_name }} </h1>
+{% for question in test.testquestion_set.all %}
+    <a> {{ question.question_id }} </a>
+    <p> {{ question.question_id.answer }}</p>
+    
+{% endfor %}
+
+{% for graded_question in graded_questions %}
+    <h3> your answer: </h3>
+    <p>
+        {{ graded_question.user_answer }}
+    </p>    
+{% endfor %}
+
+<form>
+{% csrf_token %}
+{% for graded_question in graded_questions %}
+    <input type="checkbox" name="{{ graded_question.pk }}" value="{{ graded_question.grade }}"> <br>
+{% endfor %}
+    <input type="submit">
+</form>

@@ -1,4 +1,4 @@
-<h1> {{ test.test_name }}</h1>
+<h1> {{ tests }}</h1>
 <a href="{% url 'question:tests' username=request.user.username %}">go back</a>
 <a href="{% url 'question:test_taking' username=request.user.username test_pk=test.pk %}">take</a>
 {% for testquestion in test.testquestion_set.all %}

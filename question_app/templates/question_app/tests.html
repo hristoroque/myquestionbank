@@ -1,14 +1,14 @@
-
 <h1> Welcome </h1>
 <a href="{% url 'question:main' username=request.user.username %}">go back</a>
 <a href="{% url 'question:test_creation' username=request.user.username %}">create test</a>
 {% if tests %}
     <h2>Your tests </h2>
     {% for test in tests %}
-        <a href="{% url 'question:test' username=request.user.username test_pk=test.pk %}"> {{ test.test_name }} by {{ test.user_id }}</a> <br>
+        <a href="{% url 'question:test' username=request.user.username test_pk=test.pk %}"> {{ test.test_name }} by {{ test.user_id }}</a>
+        <a href="{% url 'question:delete_test' username=request.user.username test_pk=test.pk %}"> delete </a>
+        <br>
     {% endfor %}
 {% else %}
     <h2> You don't have any tests </h2>
 {% endif %}
-    <a href="{% url 'question:test_review' username=request.user.username %}"> Check Tests </a>
-    
+<a href="{% url 'question:tests_review' username=request.user.username %}"> Check Tests </a>
