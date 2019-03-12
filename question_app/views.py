@@ -76,6 +76,25 @@ def create_question(request,username,theme_pk):
     
     return HttpResponseRedirect(reverse('question:theme',args=[username,theme_pk]))
 
+def delete_question(request,username,theme_pk,question_pk):
+    question = models.Question.objects.get(pk = question_pk)
+    question.delete()
+    return HttpResponseRedirect(reverse('question:theme',args=[username,theme_pk]))
+
+def question_update(request,username,theme_pk,question_pk):
+    question = models.Question.objects.get(pk=question_pk)
+    return render(request,'question_app/update_question.html',context={"question":question,"theme_pk":theme_pk})
+
+def update_question(request,username,theme_pk,question_pk):
+    
+    question_text = request.POST['name']
+    answer = request.POST['description']
+    question = models.Question.objects.get(pk=question_pk)
+    question.question_text = question_text
+    question.answer = answer
+    question.save()
+    return HttpResponseRedirect(reverse('question:theme',args=[username,theme_pk]))
+
 def themes(request,username):
     themes = models.Theme.objects.filter(user_id = request.user)
     print(request.user)
