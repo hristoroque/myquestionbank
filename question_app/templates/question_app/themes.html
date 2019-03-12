@@ -17,7 +17,7 @@
         <td>  {{theme.theme_description }}</td>
         <td>
             <form action="{% url 'question:delete_theme' username=request.user.username theme_pk=theme.pk %}" method="POST">
-                {% csrf_token %}<input type="submit" value="delete"></form>
+                {% csrf_token %}<input type="submit" value="ddlete"></form>
         </td>
         <td>
             <a href="{% url 'question:theme_edit' username=request.user.username theme_pk=theme.pk %}">edit</a>

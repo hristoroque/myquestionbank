@@ -1,10 +1,16 @@
+{% load static %}
+<link href="{%static 'question_app/basic.css'%}" rel="stylesheet">
 <h1> Welcome </h1>
 <a href="{% url 'question:themes' request.user.username %}"> go back </a>
 <a href="{% url 'question:question_creation' request.user.username theme_pk %}"> add question </a>
 {% if questions %}
     {% for question in questions %}
-        <h2>{{ question.question_text }}</h2>
-        <p>{{ question.answer }}</p>
+        <div class="card">
+            <h2>{{ question.question_text }}</h2>
+            <p>{{ question.answer }}</p>
+            <a class="first-child" href="{% url 'question:delete_question' request.user.username theme_pk question.pk %}">delete</a>
+            <a href="{% url 'question:question_update' request.user.username theme_pk question.pk %}">edit</a>
+        </div>
     {% endfor %}
 {% else %}
     <p>This theme doesn't have questions </p>
