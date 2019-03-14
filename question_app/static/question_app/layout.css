@@ -1,0 +1,47 @@
+header{
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+}
+h1 {
+    margin-left: 0.5em;
+}
+a:link:active, a:visited:active {
+    color: white;
+}
+.linear-down{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.linear-down>div{
+    margin: 10px auto;
+    width: 80vw;
+    font-size: 1em;
+}
+.linear-down::after{
+    content: "";
+    height: 5em;
+}
+i{
+    font-size: 2em;
+    color:#80ded9;
+}
+.back{
+    position: absolute;
+    top: 0.1em;
+    left: 0.1em;
+}
+.cellphone-button{
+    position: fixed;
+    bottom: 15;
+    right: 15;
+    font-size: 3em;
+    z-index: 2;
+    background-color: white;
+    border-radius: 50%;
+
+}
