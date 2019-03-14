@@ -1,0 +1,25 @@
+{% load static %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="{%static 'question_app/layout.css'%}">
+<link rel="stylesheet" href="{%static 'question_app/basic.css'%}">
+
+<header>
+    <h1>Login to MyQuestionApp</h1>
+</header>
+{% if message %}
+    <p> {{ message }}</p>
+{% endif %}
+<div class="center">
+    <form action="{% url 'accounts:login' %}" method="post">
+        {% csrf_token %}
+            <div class="field">
+                <label>Username:</label>
+                <input type="text" name="username" size="150">
+            </div>
+            <div class="field">
+                <label>Password:</label>
+                <input type="password" name="password" size="150">
+            </div>
+            <input type="submit" value="Login">
+    </form>
+</div>
