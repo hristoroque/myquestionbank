@@ -1,17 +1,32 @@
 {% load static %}
 <link href="{%static 'question_app/basic.css'%}" rel="stylesheet">
-<h1> Welcome </h1>
-<a href="{% url 'question:themes' request.user.username %}"> go back </a>
-<a href="{% url 'question:question_creation' request.user.username theme_pk %}"> add question </a>
+<link href="{%static 'question_app/layout.css'%}" rel="stylesheet">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<header>
+    <a href="{% url 'question:themes' request.user.username %}"> <i class="back fas fa-arrow-circle-left"></i> </a>
+    <h1> {{ theme.theme_name }}'s cards</h1>
+</header>
+<div class="cellphone-button">
+    <a href="{% url 'question:question_creation' request.user.username theme.pk %}"> <i class="fas fa-plus-circle"></i> </a>
+</div>
+
 {% if questions %}
-    {% for question in questions %}
-        <div class="card">
-            <h2>{{ question.question_text }}</h2>
-            <p>{{ question.answer }}</p>
-            <a class="first-child" href="{% url 'question:delete_question' request.user.username theme_pk question.pk %}">delete</a>
-            <a href="{% url 'question:question_update' request.user.username theme_pk question.pk %}">edit</a>
-        </div>
-    {% endfor %}
+    <div class="linear-down">
+        {% for question in questions %}
+            <div class="card">
+                <h2>{{ question.question_text }}</h2>
+                <p>{{ question.answer }}</p>
+                <a class="first-child" href="{% url 'question:delete_question' request.user.username theme.pk question.pk %}">
+                        <i class="fas fa-times-circle"></i>
+                </a>
+                <a href="{% url 'question:question_update' request.user.username theme.pk question.pk %}">
+                    <i class="fas fa-edit"></i>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
 {% else %}
     <p>This theme doesn't have questions </p>
 {% endif %}
