@@ -1,111 +1,98 @@
 from django.shortcuts import render
 from django.urls import reverse
 from django.http import HttpRequest,HttpResponseRedirect,HttpResponse
-from django.contrib.auth import authenticate,logout
-from django.contrib.auth import login as login_auth
 from django.contrib.auth.models import User
-
 from . import models
 
-def loginpage(request):
-    return render(request,'question_app/login.html')
-
-def login(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    user = authenticate(request,username=username,password=password)
-    if user is not None:
-        login_auth(request,user)
-        return HttpResponseRedirect(reverse('question:main',args=[username]))
-    else :
-        return HttpResponse("jajaj")
-
 def index(request):
-    return render(request,'question_app/index.html')
+    if request.user.is_authenticated:
+        return render(request,'question_app/main.html',context={"user": request.user})
+    else:
+        return render(request,'question_app/index.html')
 
-def log_out(request):
-    logout(request)
-    return HttpResponseRedirect(reverse('question:index'))
-    
-def main(request,username):
-    return render(request,'question_app/main.html',context = {'user': request.user})
-
-def questions(request):
+def themes(request):
     user = request.user
-    themes = models.Theme.objects.filter(user_id = user)
-    return render(request,'question_app/questions.html',context = {'themes' : themes} )
+    if user.is_authenticated:
+        themes = models.Theme.objects.filter(user_id = request.user)
+        return render(request,'question_app/themes.html',context={'themes': themes})
 
-def question_creation(request,username,theme_pk):
-    return render(request,'question_app/question_creation.html',context = {'theme_pk' : theme_pk})
+def theme(request,theme_pk):
+    user = request.user
+    if user.is_authenticated:
+        theme = models.Theme.objects.get(pk = theme_pk)
+        questions = models.Question.objects.filter(themes = theme)
+        return render(request,'question_app/theme.html',context={'questions': questions,'theme': theme})
 
-def theme_creation(request,username):
-    return render(request,'question_app/theme_creation.html')
+def new_theme(request):
+    user = request.user
+    if user.is_authenticated:
+        if request.method == "POST":
+            theme_name = request.POST['theme_name']
+            theme_description = request.POST['theme_description']
+            theme = models.Theme(theme_name = theme_name,theme_description = theme_description,user_id = user)
+            theme.save()
+            return HttpResponseRedirect(reverse('question:themes'))
+        else:
+            return render(request,'question_app/theme_creation.html')
 
-def theme_edit(request,username,theme_pk):
-    theme = models.Theme.objects.get(pk = theme_pk)
-    return render(request,'question_app/theme_edit.html',context={'theme': theme})
+def edit_theme(request,theme_pk):
+    user = request.user
+    if user.is_authenticated:
+        theme = models.Theme.objects.get(pk=theme_pk)
+        if request.method == "POST":
+            theme_name = request.POST['theme_name']
+            theme_description = request.POST['theme_description']
+            theme.theme_name = theme_name
+            theme.theme_description = theme_description
+            theme.save()
+            return HttpResponseRedirect(reverse('question:themes'))
+        else:
+            return render(request,'question_app/theme_edit.html',context={'theme': theme})
 
-def edit_theme(request,username,theme_pk):
-    name = request.POST['theme_name']
-    description = request.POST['theme_description']
-    theme = models.Theme.objects.get(pk = theme_pk)
-    theme.theme_name = name
-    theme.theme_description = description
-    theme.save()
-    return HttpResponseRedirect(reverse('question:theme',args=[username,theme_pk]))
+def delete_theme(request,theme_pk):
+    user = request.user
+    if user.is_authenticated:
+        theme = models.Theme.objects.get(pk = theme_pk)
+        theme.delete()
+        return HttpResponseRedirect(reverse('question:themes'))
 
-def create_theme(request,username):
-    name = request.POST['theme_name']
-    desc = request.POST['theme_description']
-    theme = models.Theme(theme_name = name,theme_description = desc, user_id = request.user)
-    theme.save()
-    return HttpResponseRedirect(reverse('question:themes',args=[request.user.username]))
+def new_question(request,theme_pk):
+    user = request.user
+    if user.is_authenticated:
+        if request.method == "POST":
+            name = request.POST['name']
+            answer = request.POST['answer']
+            question = models.Question(question_text = name,answer = answer,user_id = user, use_rate = 0)
+            question.save()
+            theme = models.Theme.objects.get(pk = theme_pk)
+            theme.question_set.add(question)
+            return HttpResponseRedirect(reverse('question:theme',args=[theme_pk]))
+        else:
+            return render(request,'question_app/question_creation.html',context={'theme_pk': theme_pk})
 
-def delete_theme(request,username,theme_pk):
-    theme = models.Theme.objects.get(pk = theme_pk)
-    theme.delete()
-    return HttpResponseRedirect(reverse('question:themes',args=[request.user.username]))
+def edit_question(request,theme_pk,question_pk):
+    user = request.user
+    if user.is_authenticated:
+        question = models.Question.objects.get(pk = question_pk)
+        if request.method == "POST":
+            text = request.POST['name']
+            answer = request.POST['answer']
+            question.question_text = text
+            question.answer = answer
+            question.save()
+            return HttpResponseRedirect(reverse('question:theme',args=[theme_pk]))
+        else:
+            return render(request,'question_app/update_question.html',context={'theme_pk': theme_pk,'question': question})
 
-def create_question(request,username,theme_pk):
-    name = request.POST['name']
-    answer = request.POST['answer']
-    themes = models.Theme.objects.get(pk=theme_pk)
-    question = models.Question(question_text = name,answer = answer, user_id = request.user, use_rate=0)
-    question.save()
-    themes.question_set.add(question)
-    
-    return HttpResponseRedirect(reverse('question:theme',args=[username,theme_pk]))
+def delete_question(request,theme_pk,question_pk):
+    user = request.user
+    if user.is_authenticated:
+        question = models.Question.objects.get(pk = question_pk)
+        question.delete()
+        return HttpResponseRedirect(reverse('question:theme',args=[theme_pk]))
+        
 
-def delete_question(request,username,theme_pk,question_pk):
-    question = models.Question.objects.get(pk = question_pk)
-    question.delete()
-    return HttpResponseRedirect(reverse('question:theme',args=[username,theme_pk]))
-
-def question_update(request,username,theme_pk,question_pk):
-    question = models.Question.objects.get(pk=question_pk)
-    return render(request,'question_app/update_question.html',context={"question":question,"theme_pk":theme_pk})
-
-def update_question(request,username,theme_pk,question_pk):
-    
-    question_text = request.POST['name']
-    answer = request.POST['description']
-    question = models.Question.objects.get(pk=question_pk)
-    question.question_text = question_text
-    question.answer = answer
-    question.save()
-    return HttpResponseRedirect(reverse('question:theme',args=[username,theme_pk]))
-
-def themes(request,username):
-    themes = models.Theme.objects.filter(user_id = request.user)
-    print(request.user)
-    print(request.user.pk)
-    return render(request,'question_app/themes.html',context={'themes': themes})
-
-def theme(request,username,theme_pk):
-    theme = models.Theme.objects.get(pk = theme_pk)
-    questions = models.Question.objects.filter(themes = theme)
-    return render(request,'question_app/theme.html',context={'questions': questions,'theme': theme})
-
+'''
 def tests(request,username):
     tests = models.Test.objects.filter(user_id = request.user)
     return render(request,'question_app/tests.html',context={'tests': tests})
@@ -167,3 +154,4 @@ def test_review(request,username,graded_test_pk):
 
 def test_performance(request,username):
     return render(request,'question_app/test_review.html')
+'''
