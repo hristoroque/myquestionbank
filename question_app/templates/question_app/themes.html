@@ -1,8 +1,8 @@
 {% load static %}
 <link href="{% static 'question_app/basic.css' %}" rel="stylesheet">
 <h1> Your questions </h1>
-<a href="{% url 'question:main' username=request.user.username %}"> go back </a>
-<a href="{% url 'question:theme_creation' username=request.user.username %}"> add theme </a>
+<a href="{% url 'question:index' %}"> go back </a>
+<a href="{% url 'question:new_theme' %}"> add theme </a>
 {% if themes %}
 <table>
     <tr>
@@ -13,14 +13,14 @@
     
         <tr id="clickable"> 
         <td>
-                <a href="{% url 'question:theme' username=request.user.username theme_pk=theme.pk%}">  {{ theme.theme_name }} </a></td>
+                <a href="{% url 'question:theme'  theme_pk=theme.pk%}">  {{ theme.theme_name }} </a></td>
         <td>  {{theme.theme_description }}</td>
         <td>
-            <form action="{% url 'question:delete_theme' username=request.user.username theme_pk=theme.pk %}" method="POST">
+            <form action="{% url 'question:delete_theme'  theme_pk=theme.pk %}" method="POST">
                 {% csrf_token %}<input type="submit" value="ddlete"></form>
         </td>
         <td>
-            <a href="{% url 'question:theme_edit' username=request.user.username theme_pk=theme.pk %}">edit</a>
+            <a href="{% url 'question:edit_theme' theme_pk=theme.pk %}">edit</a>
         </td>
         </tr>
     

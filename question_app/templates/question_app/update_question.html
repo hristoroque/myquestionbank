@@ -1,9 +1,9 @@
 <h1>Update your question</h1>
-<form action="{% url 'question:update_question' username=request.user.username theme_pk=theme_pk question_pk=question.pk%}" method="POST">
+<form action="{% url 'question:edit_question' theme_pk=theme_pk question_pk=question.pk%}" method="POST">
     {% csrf_token %}
     <label> question name </label>
     <input name="name" type="text" value="{{ question.question_text }}">
     <label> answer </label>
-    <textarea name="description">{{ question.answer }}</textarea>
+    <textarea name="answer">{{ question.answer }}</textarea>
     <input type="submit">
 </form>

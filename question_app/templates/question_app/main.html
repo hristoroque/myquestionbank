@@ -1,16 +1,17 @@
 {% load static %}
 <link href="{% static 'question_app/basic.css' %}" rel="stylesheet" type="text/css">
-<link href="{% static 'question_app/style.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'question_app/layout.css' %}" rel="stylesheet" type="text/css">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<main>
+<header>
     <h1>Hello, {{ user.get_username }}</h1>
-    <form action="{% url 'question:logout' %}" method="POST">
+</header>
+    <form action="{% url 'accounts:logout' %}" method="POST">
     {% csrf_token %}
         <input type="submit" value="Logout">
     </form>
-    <div id="buttons">
-        <a href="{% url 'question:themes' user.username %}" id="button"> <div> Themes </div> </a>
-        <a href="{% url 'question:tests' user.username %}" id="button"> <div> Tests </div> </a>
-        <a href="{% url 'question:themes' user.username %}" id="button"> <div> Settings </div> </a>
+    <div class="list-box">
+        <a href="{% url 'question:themes'  %}" class="button rounded"> <div> Themes </div> </a>
+        <a href="{% url 'question:themes' %}" class="button rounded"> <div> Tests </div> </a>
+        <a href="{% url 'question:themes' %}" class="button rounded"> <div> Settings </div> </a>
     </div>
-</main>
+

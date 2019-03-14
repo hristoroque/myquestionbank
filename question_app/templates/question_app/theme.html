@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <header>
-    <a href="{% url 'question:themes' request.user.username %}"> <i class="back fas fa-arrow-circle-left"></i> </a>
+    <a href="{% url 'question:themes' %}"> <i class="back fas fa-arrow-circle-left"></i> </a>
     <h1> {{ theme.theme_name }}'s cards</h1>
 </header>
 <div class="cellphone-button">
-    <a href="{% url 'question:question_creation' request.user.username theme.pk %}"> <i class="fas fa-plus-circle"></i> </a>
+    <a href="{% url 'question:new_question' theme.pk %}"> <i class="fas fa-plus-circle"></i> </a>
 </div>
 
 {% if questions %}
@@ -18,10 +18,10 @@
             <div class="card">
                 <h2>{{ question.question_text }}</h2>
                 <p>{{ question.answer }}</p>
-                <a class="first-child" href="{% url 'question:delete_question' request.user.username theme.pk question.pk %}">
+                <a class="first-child" href="{% url 'question:delete_question' theme.pk question.pk %}">
                         <i class="fas fa-times-circle"></i>
                 </a>
-                <a href="{% url 'question:question_update' request.user.username theme.pk question.pk %}">
+                <a href="{% url 'question:edit_question' theme.pk question.pk %}">
                     <i class="fas fa-edit"></i>
                 </a>
             </div>

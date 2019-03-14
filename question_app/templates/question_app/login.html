@@ -1,7 +1,0 @@
-<h1>Login to MyQuestionApp</h1>
-<form action="{% url 'question:login' %}" method="post">
-{% csrf_token %}
-    <input type="text" name="username">
-    <input type="password" name="password">
-    <input type="submit" value="Login">
-</form>
