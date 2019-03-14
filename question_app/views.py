@@ -102,8 +102,9 @@ def themes(request,username):
     return render(request,'question_app/themes.html',context={'themes': themes})
 
 def theme(request,username,theme_pk):
-    questions = models.Question.objects.filter(themes__pk = theme_pk)
-    return render(request,'question_app/theme.html',context={'questions': questions,'theme_pk': theme_pk})
+    theme = models.Theme.objects.get(pk = theme_pk)
+    questions = models.Question.objects.filter(themes = theme)
+    return render(request,'question_app/theme.html',context={'questions': questions,'theme': theme})
 
 def tests(request,username):
     tests = models.Test.objects.filter(user_id = request.user)
