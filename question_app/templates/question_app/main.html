@@ -1,17 +1,24 @@
 {% load static %}
-<link href="{% static 'question_app/basic.css' %}" rel="stylesheet" type="text/css">
 <link href="{% static 'question_app/layout.css' %}" rel="stylesheet" type="text/css">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<header>
-    <h1>Hello, {{ user.get_username }}</h1>
-</header>
-    <form action="{% url 'accounts:logout' %}" method="POST">
-    {% csrf_token %}
-        <input type="submit" value="Logout">
-    </form>
-    <div class="list-box">
-        <a href="{% url 'question:themes'  %}" class="button rounded"> <div> Themes </div> </a>
-        <a href="{% url 'question:themes' %}" class="button rounded"> <div> Tests </div> </a>
-        <a href="{% url 'question:themes' %}" class="button rounded"> <div> Settings </div> </a>
-    </div>
+<link href="{% static 'question_app/basic.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<div>
+    <header class="menu">
+            <form action="{% url 'accounts:logout' %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" value="submit">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+            </form>
+        <h1 class="header">Hello, {{ user.get_username }}</h1>
+    </header>
+    <main class="content">
+        <div class="box vertical">
+            <a href="{% url 'question:themes' %}" class="button"> <span>Themes </span> </a>
+            <a href="" class="button disabled"> Tests </a>
+            <button href="" class="button disabled">  Settings  </button>
+        </div>
+    </main>
+</div>
