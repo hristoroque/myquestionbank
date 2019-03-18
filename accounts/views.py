@@ -1,4 +1,4 @@
-from django.shortcuts import render,reverse
+from django.shortcuts import render,reverse,redirect
 from django.contrib.auth.models import User 
 from django.contrib.auth import login,logout,authenticate
 from django.http import HttpResponseRedirect
@@ -9,14 +9,15 @@ def login_view(request):
             name = request.POST["username"]
             password = request.POST["password"]
             user = authenticate(request,username=name,password=password)
-            print("authenticating")
             if user is not None:
-                print("user autehnticated")
                 login(request,user)
-                return HttpResponseRedirect(reverse('question:index'))
+                if 'path' in request.POST:
+                    return redirect(request.POST['path'])
+                else:
+                    return HttpResponseRedirect(reverse('question:index'))
             else:
-                message = "Youre username or password is incorrect"
-                return HttpResponseRedirect(reverse('accounts:login'))
+                message = "12JK3M"
+                return HttpResponseRedirect("/login/?login=%s" %message)
         else:
             return render(request,'accounts/login.html')
     else:
@@ -27,6 +28,6 @@ def logout_view(request):
         logout(request)
         return HttpResponseRedirect(reverse('question:index'))
     else:
-        return render('question_app/index.html')
+        return render(request,'question_app/main.html')
 #def signup_view():
 #    return render()
