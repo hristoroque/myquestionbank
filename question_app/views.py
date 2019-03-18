@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.urls import reverse
 from django.http import HttpRequest,HttpResponseRedirect,HttpResponse
 from django.contrib.auth.models import User
@@ -15,13 +15,17 @@ def themes(request):
     if user.is_authenticated:
         themes = models.Theme.objects.filter(user_id = request.user)
         return render(request,'question_app/themes.html',context={'themes': themes})
-
+    else:
+        return redirect('/login/?next=%s' % request.path)
+        
 def theme(request,theme_pk):
     user = request.user
     if user.is_authenticated:
         theme = models.Theme.objects.get(pk = theme_pk)
         questions = models.Question.objects.filter(themes = theme)
         return render(request,'question_app/theme.html',context={'questions': questions,'theme': theme})
+    else:
+        return redirect('/login/?next=%s' % request.path)
 
 def new_theme(request):
     user = request.user
@@ -34,6 +38,8 @@ def new_theme(request):
             return HttpResponseRedirect(reverse('question:themes'))
         else:
             return render(request,'question_app/theme_creation.html')
+    else:
+        return redirect('/login/?next=%s' % request.path)
 
 def edit_theme(request,theme_pk):
     user = request.user
@@ -48,6 +54,8 @@ def edit_theme(request,theme_pk):
             return HttpResponseRedirect(reverse('question:themes'))
         else:
             return render(request,'question_app/theme_edit.html',context={'theme': theme})
+    else:
+        return redirect('/login/?next=%s' % request.path)
 
 def delete_theme(request,theme_pk):
     user = request.user
@@ -55,6 +63,8 @@ def delete_theme(request,theme_pk):
         theme = models.Theme.objects.get(pk = theme_pk)
         theme.delete()
         return HttpResponseRedirect(reverse('question:themes'))
+    else:
+        return redirect("/login")
 
 def new_question(request,theme_pk):
     user = request.user
@@ -69,6 +79,8 @@ def new_question(request,theme_pk):
             return HttpResponseRedirect(reverse('question:theme',args=[theme_pk]))
         else:
             return render(request,'question_app/question_creation.html',context={'theme_pk': theme_pk})
+    else:
+        return redirect('/login/?next=%s' % request.path)
 
 def edit_question(request,theme_pk,question_pk):
     user = request.user
@@ -83,6 +95,8 @@ def edit_question(request,theme_pk,question_pk):
             return HttpResponseRedirect(reverse('question:theme',args=[theme_pk]))
         else:
             return render(request,'question_app/update_question.html',context={'theme_pk': theme_pk,'question': question})
+    else:
+        return redirect('/login/?next=%s' % request.path)
 
 def delete_question(request,theme_pk,question_pk):
     user = request.user
@@ -90,7 +104,8 @@ def delete_question(request,theme_pk,question_pk):
         question = models.Question.objects.get(pk = question_pk)
         question.delete()
         return HttpResponseRedirect(reverse('question:theme',args=[theme_pk]))
-        
+    else:
+        return redirect("/login")
 
 '''
 def tests(request,username):
