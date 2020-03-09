@@ -1,24 +1,12 @@
-{% load static %}
-<link href="{% static 'question_app/layout.css' %}" rel="stylesheet" type="text/css">
-<link href="{% static 'question_app/basic.css' %}" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<div>
-    <header class="menu">
-            <form action="{% url 'accounts:logout' %}" method="POST">
-                    {% csrf_token %}
-                    <button type="submit" value="submit">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </button>
-            </form>
-        <h1 class="header">Hello, {{ user.get_username }}</h1>
-    </header>
-    <main class="content">
-        <div class="box vertical">
-            <a href="{% url 'question:themes' %}" class="button"> <span>Themes </span> </a>
-            <a href="" class="button disabled"> Tests </a>
-            <button href="" class="button disabled">  Settings  </button>
-        </div>
-    </main>
-</div>
+{% extends 'main/base.html' %}
+{% block body %}
+<h1> Welcome, {{ request.user.username }} </h1>
+<ul class="nav">
+	<li class="nav-item">
+		<a href="{% url 'question:themes' %}" class="nav-link active"> Tests </a>
+	</li>	
+	<li class="nav-item">
+		<a class="nav-link"> Settings </a>
+	</li>
+</ul>
+{% endblock %}

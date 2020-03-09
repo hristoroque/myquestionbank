@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'u#g3die(9+^s91umh!1=jw*t%y7ui&ibjkbzu_)i1m24teq@!#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['192.168.0.10','localhost']
 
@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['192.168.0.10','localhost']
 # Application definition
 
 INSTALLED_APPS = [
+    'main.apps.MainConfig',
     'question_app.apps.QuestionAppConfig',
     'accounts.apps.AccountsConfig',
     'django.contrib.admin',
@@ -77,12 +78,12 @@ WSGI_APPLICATION = 'myquestionbank.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'questions_db',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
+        #'USER': 'root',
+        #'PASSWORD': 'root',
+        #'HOST': '127.0.0.1',
+        #'PORT': '3306',
     }
 }
 
