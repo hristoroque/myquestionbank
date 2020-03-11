@@ -1,7 +1,6 @@
 from django.shortcuts import render,redirect
 from django.urls import reverse
 from django.http import HttpRequest,HttpResponseRedirect,HttpResponse
-from django.contrib.auth.models import User
 from . import models
 
 def index(request):
