@@ -14,6 +14,12 @@ TBA
 ## Support
 TBA
 ## Roadmap
-TBA
+Currently, you can CRUD themes. and the only type of question supported is an open-ended question.
+The following features will be added:
+- [ ] Creation of differente types of questions.
+- [ ] Creations of tests from a single theme, or differents themes
+- [ ] Review and grade tests
+- [ ] Send tests to other users
+- [ ] Review your own tests by theme, hard questions, or random.
 ## Project Status
 The project is being reworked
