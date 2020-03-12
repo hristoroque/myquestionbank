@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.urls import reverse
 from django.http import HttpRequest,HttpResponseRedirect,HttpResponse
+from django.contrib import messages
 from . import models
 
 def main(request):
@@ -27,8 +28,11 @@ def create_theme(request):
             name = request.POST['name']
             description = request.POST['description']
 
-            theme = models.Theme(theme_name = name,theme_description = description,user_id = request.user)
+            theme = models.Theme(theme_name = name.strip(),theme_description = description.strip(),user_id = request.user)
             theme.save()
+
+            messages.success(request,"You created the theme '%s' successfully." % name)
+
             return HttpResponseRedirect(reverse('question:main'))
         # If not, we render the template
         else:
@@ -37,25 +41,32 @@ def create_theme(request):
         return redirect(reverse('accounts/login'))
 
 def edit_theme(request,theme_pk):
-    user = request.user
-    if user.is_authenticated:
+    if request.user.is_authenticated:
         theme = models.Theme.objects.get(pk=theme_pk)
         if request.method == "POST":
-            theme_name = request.POST['theme_name']
-            theme_description = request.POST['theme_description']
-            theme.theme_name = theme_name
-            theme.theme_description = theme_description
+            theme_name = request.POST['name']
+            theme_description = request.POST['description']
+
+            theme.theme_name = theme_name.strip()
+            theme.theme_description = theme_description.strip()
+            
             theme.save()
-            return HttpResponseRedirect(reverse('question:themes'))
+
+            messages.success(request,"Theme '%s' successfully edited." % theme_name)
+
+            return HttpResponseRedirect(reverse('question:main'))
         else:
-            return render(request,'question_app/theme_edit.html',context={'theme': theme})
+            return render(request,'question_app/theme_create.html',context={"theme": theme})
     else:
-        return redirect('/login/?next=%s' % request.path)
+        return redirect(reverse(login))
 
 def delete_theme(request,theme_pk):
     if request.user.is_authenticated:
         theme = models.Theme.objects.get(pk = theme_pk)
         theme.delete()
+
+        messages.info(request,"Theme '%s' successfully deleted." % theme.theme_name )
+
         return HttpResponseRedirect(reverse('question:main'))
     else:
         return redirect(reverse('accounts:login'))

@@ -20,28 +20,30 @@
 		</th>
 		<th colspan="2">
 			<div class="d-flex justify-content-center">
-				<a class="btn btn-success" href="{% url 'question:new_theme' %}"> add theme </a>
+				<a class="btn btn-success" href="{% url 'question:create_theme' %}"> add theme </a>
 			</div>
 		</th>
 	</tr>
 	{% for theme in themes %}
 	<tr>
 		<td>
-			{{ theme.theme_name }}
+			<a href="{% url 'question:detail_theme' theme.id %}">
+				{{ theme.theme_name }}
+			</a>
 		</td>
 		<td>
 			{{ theme.theme_description }}
 		</td>
 		<td>
 			<div class="d-flex justify-content-center">
-				<a class="btn btn-primary btn-sm" href="">
-					Editar
+				<a class="btn btn-primary btn-sm" href="{% url 'question:edit_theme' theme.pk %}">
+					Edit
 				</a>
 			</div>
 		</td>
 		<td>
 			<div class="d-flex justify-content-center">
-				<form action="{% url 'question:delete_theme'  theme_pk=theme.pk %}" method="POST">
+				<form action="{% url 'question:delete_theme'  theme.pk %}" method="POST">
 					{% csrf_token %}
 					<input class="btn btn-danger btn-sm" type="submit" value="delete">
 				</form>

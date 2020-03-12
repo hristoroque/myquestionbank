@@ -1,9 +1,11 @@
 <h1>Create your theme</h1>
-<form action="{% url 'question:edit_theme' theme_pk=theme.pk%}" method="POST">
+<form method="POST">
     {% csrf_token %}
     <label> theme name </label>
-    <input name="theme_name" type="text" value="{{ theme.theme_name }}">
+    <input name="name" type="text" value="{{ theme.theme_name }}">
     <label> description </label>
-    <textarea name="theme_description">{{ theme.theme_description }}</textarea>
-    <input type="submit">
+    <textarea name="description">
+        {{ theme.theme_description }}
+    </textarea>
+    <input type="submit" value="Guardar">
 </form>

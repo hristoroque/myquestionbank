@@ -5,8 +5,8 @@ from . import views
 app_name = "question"
 urlpatterns = [
     path('',views.main,name='main'),
-    path('themes/<int:theme_pk>',views.theme,name="theme"),
-    path('themes/new',views.create_theme,name="new_theme"),
+    path('themes/<int:theme_pk>',views.theme,name="detail_theme"),
+    path('themes/create',views.create_theme,name="create_theme"),
     path('themes/<int:theme_pk>/edit',views.edit_theme,name="edit_theme"),
     path('themes/<int:theme_pk>/delete',views.delete_theme,name="delete_theme"),
     path('themes/<int:theme_pk>/create',views.new_question,name="new_question"),
