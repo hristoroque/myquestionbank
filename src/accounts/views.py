@@ -1,7 +1,6 @@
 from django.shortcuts import render,reverse,redirect
 from django.contrib import messages
 from django.contrib.auth import login,logout,authenticate
-from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView
 from . import forms
@@ -18,25 +17,22 @@ def login_view(request):
                 if 'path' in request.POST:
                     return redirect(request.POST['path'])
                 else:
-                    return HttpResponseRedirect(reverse('question:index'))
+                    return redirect(reverse('question:main'))
             else:
                 messages.warning(request,"Your username or password is incorrect")
-                return HttpResponseRedirect(reverse('accounts:login'))
+                return redirect(reverse('accounts:login'))
         else:
             return render(request,'accounts/login.html')
     else:
-        return HttpResponseRedirect(reverse('question:index'))
+        return redirect(reverse('question:main'))
 
 def logout_view(request):
-    if request.method == "POST":
-        logout(request)
-        return HttpResponseRedirect(reverse('home'))
-    else:
-        return render(request,'question_app/main.html')
+    logout(request)
+    return redirect(reverse('home'))
 
 class SignUpView(FormView):
     form_class = forms.UserCreationForm
-    success_url = reverse_lazy('question:index')
+    success_url = reverse_lazy('question:main')
     template_name = 'accounts/signup.html'
 
     def form_valid(self,form):
@@ -50,5 +46,5 @@ class SignUpView(FormView):
 
         login(self.request,user)
         
-        messages.success(self.request, "You signed up successfully")
+        messages.success(self.request, "You've signed up successfully")
         return response
