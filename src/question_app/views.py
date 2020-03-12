@@ -19,23 +19,22 @@ def theme(request,theme_pk):
     else:
         return redirect('/login/?next=%s' % request.path)
 
-def new_theme(request):
-    user = request.user
+def create_theme(request):
     # Check if the user is authenticated. If not, return to login.
-    if user.is_authenticated:
+    if request.user.is_authenticated:
         # If the method is POST, then is submitting the form
         if request.method == "POST":
             name = request.POST['name']
             description = request.POST['description']
 
-            theme = models.Theme(theme_name = name,theme_description = description,user_id = user)
+            theme = models.Theme(theme_name = name,theme_description = description,user_id = request.user)
             theme.save()
-            return HttpResponseRedirect(reverse('question:themes'))
+            return HttpResponseRedirect(reverse('question:main'))
         # If not, we render the template
         else:
             return render(request,'question_app/theme_create.html')
     else:
-        return redirect('/login/?next=%s' % request.path)
+        return redirect(reverse('accounts/login'))
 
 def edit_theme(request,theme_pk):
     user = request.user
@@ -54,13 +53,12 @@ def edit_theme(request,theme_pk):
         return redirect('/login/?next=%s' % request.path)
 
 def delete_theme(request,theme_pk):
-    user = request.user
-    if user.is_authenticated:
+    if request.user.is_authenticated:
         theme = models.Theme.objects.get(pk = theme_pk)
         theme.delete()
-        return HttpResponseRedirect(reverse('question:themes'))
+        return HttpResponseRedirect(reverse('question:main'))
     else:
-        return redirect("/login")
+        return redirect(reverse('accounts:login'))
 
 def new_question(request,theme_pk):
     user = request.user
