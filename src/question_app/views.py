@@ -28,15 +28,19 @@ def theme(request,theme_pk):
 
 def new_theme(request):
     user = request.user
+    # Check if the user is authenticated. If not, return to login.
     if user.is_authenticated:
+        # If the method is POST, then is submitting the form
         if request.method == "POST":
-            theme_name = request.POST['theme_name']
-            theme_description = request.POST['theme_description']
-            theme = models.Theme(theme_name = theme_name,theme_description = theme_description,user_id = user)
+            name = request.POST['name']
+            description = request.POST['description']
+
+            theme = models.Theme(theme_name = name,theme_description = description,user_id = user)
             theme.save()
             return HttpResponseRedirect(reverse('question:themes'))
+        # If not, we render the template
         else:
-            return render(request,'question_app/theme_creation.html')
+            return render(request,'question_app/theme_create.html')
     else:
         return redirect('/login/?next=%s' % request.path)
 
