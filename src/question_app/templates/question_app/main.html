@@ -3,10 +3,53 @@
 <h1> Welcome, {{ request.user.username }} </h1>
 <ul class="nav">
 	<li class="nav-item">
-		<a href="{% url 'question:themes' %}" class="nav-link active"> Tests </a>
-	</li>	
+		<a href="#" class="nav-link disabled"> Tests </a>
+	</li>
 	<li class="nav-item">
-		<a class="nav-link"> Settings </a>
+		<a href="#" class="nav-link disabled"> Settings </a>
 	</li>
 </ul>
+<hr>
+<h2> Your themes: </h2>
+
+
+<table class="table table-sm table-striped">
+	<tr class="table-primary">
+		<th colspan="2">
+			Your themes
+		</th>
+		<th colspan="2">
+			<div class="d-flex justify-content-center">
+				<a class="btn btn-success" href="{% url 'question:new_theme' %}"> add theme </a>
+			</div>
+		</th>
+	</tr>
+	{% for theme in themes %}
+	<tr>
+		<td>
+			{{ theme.theme_name }}
+		</td>
+		<td>
+			{{ theme.theme_description }}
+		</td>
+		<td>
+			<div class="d-flex justify-content-center">
+				<a class="btn btn-primary btn-sm" href="">
+					Editar
+				</a>
+			</div>
+		</td>
+		<td>
+			<div class="d-flex justify-content-center">
+				<form action="{% url 'question:delete_theme'  theme_pk=theme.pk %}" method="POST">
+					{% csrf_token %}
+					<input class="btn btn-danger btn-sm" type="submit" value="delete">
+				</form>
+			</div>
+		</td>
+	</tr>
+	{% empty %}
+</table>
+<p> You don't have themes </p>
+{% endfor %}
 {% endblock %}

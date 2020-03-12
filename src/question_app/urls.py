@@ -4,8 +4,7 @@ from . import views
 
 app_name = "question"
 urlpatterns = [
-    path('',views.index,name='index'),
-    path('themes/',views.themes,name="themes"),
+    path('',views.main,name='main'),
     path('themes/<int:theme_pk>',views.theme,name="theme"),
     path('themes/new',views.new_theme,name="new_theme"),
     path('themes/<int:theme_pk>/edit',views.edit_theme,name="edit_theme"),

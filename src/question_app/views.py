@@ -3,19 +3,12 @@ from django.urls import reverse
 from django.http import HttpRequest,HttpResponseRedirect,HttpResponse
 from . import models
 
-def index(request):
+def main(request):
     if request.user.is_authenticated:
-        return render(request,'question_app/main.html',context={"user": request.user})
+        themes = models.Theme.objects.filter(user_id = request.user)
+        return render(request,'question_app/main.html',context={"themes": themes})
     else:
         return render(request,'question_app/index.html')
-
-def themes(request):
-    user = request.user
-    if user.is_authenticated:
-        themes = models.Theme.objects.filter(user_id = request.user)
-        return render(request,'question_app/themes.html',context={'themes': themes})
-    else:
-        return redirect('/login/?next=%s' % request.path)
         
 def theme(request,theme_pk):
     user = request.user
