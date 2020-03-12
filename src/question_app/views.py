@@ -81,7 +81,7 @@ def new_question(request,theme_pk):
             question.save()
             theme = models.Theme.objects.get(pk = theme_pk)
             theme.question_set.add(question)
-            return HttpResponseRedirect(reverse('question:theme',args=[theme_pk]))
+            return HttpResponseRedirect(reverse('question:detail_theme',args=[theme_pk]))
         else:
             return render(request,'question_app/question_creation.html',context={'theme_pk': theme_pk})
     else:

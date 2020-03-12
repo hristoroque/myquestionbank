@@ -1,5 +1,5 @@
-{% load static %}
-<link href="{% static 'question_app/basic.css' %}" rel="stylesheet" type="text/css">
+{% extends 'main/base.html' %}
+{% block body %}
 <h1>Create your question</h1>
 <form action="{% url 'question:new_question' theme_pk %}" method="POST">
     {% csrf_token %}
@@ -10,3 +10,4 @@
     <textarea name="answer"> </textarea>
     <input type="submit">
 </form>
+{% endblock %}

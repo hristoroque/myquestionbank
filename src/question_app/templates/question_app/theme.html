@@ -1,32 +1,30 @@
-{% load static %}
-<link href="{%static 'question_app/basic.css'%}" rel="stylesheet">
-<link href="{%static 'question_app/layout.css'%}" rel="stylesheet">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends 'main/base.html' %}
+{% block body %}
 
 <header>
     <a href="{% url 'question:main' %}"> <i class="back fas fa-arrow-circle-left"></i> </a>
-    <h1> {{ theme.theme_name }}'s cards</h1>
+    <h1> {{ theme.theme_name }}'s question</h1>
 </header>
 <div class="cellphone-button">
-    <a href="{% url 'question:new_question' theme.pk %}"> <i class="fas fa-plus-circle"></i> </a>
+    <a href="{% url 'question:new_question' theme.pk %}"> <i class="fas fa-plus-circle">Add</i> </a>
 </div>
 
 {% if questions %}
-    <div class="linear-down">
-        {% for question in questions %}
-            <div class="card">
-                <h2>{{ question.question_text }}</h2>
-                <p>{{ question.answer }}</p>
-                <a class="first-child" href="{% url 'question:delete_question' theme.pk question.pk %}">
-                        <i class="fas fa-times-circle"></i>
-                </a>
-                <a href="{% url 'question:edit_question' theme.pk question.pk %}">
-                    <i class="fas fa-edit"></i>
-                </a>
-            </div>
-        {% endfor %}
-    </div>
+<ul class="list-group list-group-flush">
+    {% for question in questions %}
+    <li class="list-group-item">
+        <p>{{ question.question_text }}</p>
+        <p>{{ question.answer }}</p>
+        <a class="first-child" href="{% url 'question:delete_question' theme.pk question.pk %}">
+            <i class="fas fa-times-circle"></i>
+        </a>
+        <a href="{% url 'question:edit_question' theme.pk question.pk %}">
+            <i class="fas fa-edit"></i>
+        </a>
+    </li>
+    {% endfor %}
+</div>
 {% else %}
-    <p>This theme doesn't have questions </p>
+<p>This theme doesn't have questions </p>
 {% endif %}
+{% endblock %}
