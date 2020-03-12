@@ -1,4 +1,5 @@
 from django.shortcuts import render,reverse,redirect
+from django.contrib import messages
 from django.contrib.auth import login,logout,authenticate
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -19,8 +20,8 @@ def login_view(request):
                 else:
                     return HttpResponseRedirect(reverse('question:index'))
             else:
-                message = "12JK3M"
-                return HttpResponseRedirect("/login/?login=%s" %message)
+                messages.warning(request,"Your username or password is incorrect")
+                return HttpResponseRedirect(reverse('accounts:login'))
         else:
             return render(request,'accounts/login.html')
     else:
@@ -32,8 +33,6 @@ def logout_view(request):
         return HttpResponseRedirect(reverse('question:index'))
     else:
         return render(request,'question_app/main.html')
-#def signup_view():
-#    return render()
 
 class SignUpView(FormView):
     form_class = forms.UserCreationForm
