@@ -1,8 +1,73 @@
-<h2> Signup </h2>
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="input" class="btn btn-primary">
-        Signup
-    </button>
-</form>
+{% extends 'main/base.html' %}
+{% block body %}
+<div>
+    <header class="row justify-content-center mb-2">
+        <h1 class="mw-75 text-center">Signup</h1>
+    </header>
+    <div class="row justify-content-center">
+        <form class="needs-validation mw-75" method="POST" novalidate>
+            {% csrf_token %}
+            <div class="form-group form-row">
+                <div class="col-12">
+                    {{ form.email.label_tag }}
+                </div>
+                <div class="col-12">
+                    <input id="id_email" class="form-control col-12" name="email" type="email"
+                        value="{{ form.email.value|default:'' }}" />
+                </div>
+                <div class="">
+                    {{ form.email.errors }}
+                </div>
+            </div>
+            <div class="form-group form-row">
+                {{ form.username.label_tag }}
+                <input class="form-control" name="username" type="text" value="{{ form.username.value|default:'' }}"
+                    aria-describedby="usernamehelp" />
+                <div class="invalid-feedback">
+                    {{ form.username.errors }}
+                </div>
+                <small id="usernamehelp" class="form-text text-muted">
+                    {{ form.username.help_text }}
+                </small>
+            </div>
+            <div class="form-group form-row">
+                {{ form.role.label_tag }}
+                {{ form.role }}
+                <small>
+                    {{ form.role.help_text }}
+                </small>
+                <div class="invalid-feedback">
+                    {{ form.role.errors }}
+                </div>
+            </div>
+            <div class="form-group form-row">
+                {{ form.password1.label_tag }}
+                <input class="form-control" name="password1" type="password"
+                    value="{{ form.password1.value|default:'' }}" aria-describedby="password1help">
+                <small id="password1help" class="form-text text-muted">
+                    {{ form.password1.help_text }}
+                </small>
+                <div class="invalid-feedback">
+                    {{ form.password1.errors }}
+                </div>
+            </div>
+            <div class="form-group form-row">
+                {{ form.password2.label_tag }}
+                <input class="form-control" name="password2" type="password"
+                    value="{{ form.password2.value|default:'' }}" aria-describedby="password2help">
+                <small id="password2help" class="form-text text-muted">
+                    {{ form.password2.help_text }}
+                </small>
+                <div class="invalid-feedback">
+                    {{ form.password2.errors }}
+                </div>
+            </div>
+            <div class="form-group form-row justify-content-center">
+                <button type="input" class="btn btn-primary">
+                    Signup
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

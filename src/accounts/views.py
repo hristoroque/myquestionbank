@@ -30,7 +30,7 @@ def login_view(request):
 def logout_view(request):
     if request.method == "POST":
         logout(request)
-        return HttpResponseRedirect(reverse('question:index'))
+        return HttpResponseRedirect(reverse('home'))
     else:
         return render(request,'question_app/main.html')
 
@@ -49,3 +49,6 @@ class SignUpView(FormView):
         user = authenticate(self.request,username = username, password = raw_password)
 
         login(self.request,user)
+        
+        messages.success(self.request, "You signed up successfully")
+        return response
