@@ -18,3 +18,12 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+MyQuestionBank is a study app that lets students learn by test-taking and lets teachers create their
+own tests.
+
+Product Vision
+--------------
+
+Test-taking is one of the fastest ways of learning because it forces your to recall the information.
+Instead of trying to learn by reading or looking at mental diagrams.
