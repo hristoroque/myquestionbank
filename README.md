@@ -7,6 +7,8 @@ You will be able to create and answer your questions ( like flashcards ) sorted 
 If you want to install the app to use it locally or contribute with the project then you must clone the repository and follow the instruccions.
 ### Requirements
 You must have python3 and pipenv.
+For the future documentation, it needs sphinx, sphinx-needs and its prerequisites also.
+It's using PlantUML under the GPL license.
 ### Installation
 To install the dependencies, run : `pipenv install` and to run the environement you must run `pipenv shell`.
 ## Usage
