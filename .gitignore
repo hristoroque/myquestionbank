@@ -1,2 +1,12 @@
 questions_db
 docs/build/*
+
+# Ignore migrations and compiled bytecode
+
+0*.py
+*.pyc
+
+# Ignore .idea
+
+
+.idea
